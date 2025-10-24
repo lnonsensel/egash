@@ -12,20 +12,24 @@ def get_grid():
     top_border_h = cfg.GRID_BIAS_Y
     bottom_border_h = cfg.GRID_BIAS_Y + cfg.GRID_HEIGHT
     num_blocks_height = (bottom_border_h - top_border_h) // cfg.BLOCK_HEIGHT
-
+    print (num_blocks_width)
+    print (num_blocks_height)
     pt1, pt2 = (left_border_w, top_border_h), (right_border_w, bottom_border_h)
 
     grid = np.zeros((num_blocks_width, num_blocks_height))
     coords = []
     for x in range(grid.shape[0]):
         for y in range(grid.shape[1]):
-            coords.append([y, x])
+            coords.append([x,y])
+    
     
     random.shuffle(coords)
 
     coords = coords[:cfg.BLOCKS_NUM]
     for y, x in coords:
-        grid[x, y] = 1
+        grid[y, x] = 1
+    
+
 
     return grid, (pt1, pt2)
 
@@ -41,15 +45,15 @@ def draw_block(img, coords: tuple[int, int]):
            cfg.GRID_BIAS_Y + cfg.BLOCK_HEIGHT * (coords[1] + 1))
 
     cv2.rectangle(img, pt1, pt2, [255,0,0], -1)
-    cv2.rectangle(img, pt1, pt2, [0,0,0], 4)
+    cv2.rectangle(img, pt1, pt2, [255,255,255], 1)
 
 
 def draw_grid(img, grid):
 
     grid_shape = grid.shape
-    for y in range(grid_shape[0]):
-        for x in range(grid_shape[1]):
-            if grid[y, x]:
+    for x in range(grid_shape[0]):
+        for y in range(grid_shape[1]):
+            if grid[x,y]:
                 draw_block(img, (x,y))
 
     # quit()
@@ -58,3 +62,12 @@ def draw_grid(img, grid):
 
 # if __name__ == '__main__':
 #     draw_grid()
+def draw_grid_box(img):
+    right_border_w = cfg.WINDOW_WIDTH - cfg.GRID_BIAS_X
+    left_border_w = cfg.GRID_BIAS_X
+    
+
+    top_border_h = cfg.GRID_BIAS_Y
+    bottom_border_h = cfg.GRID_BIAS_Y + cfg.GRID_HEIGHT
+    
+    cv2.rectangle(img=img ,pt1 =  (left_border_w,top_border_h), pt2=(right_border_w,bottom_border_h), color = (100,100,100), thickness= 4) 

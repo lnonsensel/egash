@@ -2,18 +2,23 @@ import cv2
 import numpy as np
 import config as cfg
 from player import draw_player
-from grid import draw_grid, get_grid
+from grid import draw_grid, get_grid, draw_grid_box
+from ball import draw_ball
 width = cfg.WINDOW_WIDTH
 height = cfg.WINDOW_HEIGHT
 
 img = np.zeros((height, width, 3), dtype=np.uint8)
 grid, points = get_grid()
 
+
 bias = 0
 while True:
     cv2.imshow('Game', img)
     img = np.zeros((height, width, 3), dtype=np.uint8)
     draw_grid(img, grid)
+    draw_grid_box(img=img)
+
+    draw_ball(img = img)
     bias = draw_player(img, bias=bias)
     key = cv2.waitKey(1) & 0xFF
     
